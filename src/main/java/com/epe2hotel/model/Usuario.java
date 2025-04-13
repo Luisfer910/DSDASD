@@ -122,6 +122,12 @@ public class Usuario implements Serializable {
         reserva.setUsuario(this);
     }
     
+    // Añade este método a tu clase Usuario.java
+    public String getRolAsString() {
+        return admin ? "ADMIN" : "USUARIO";
+    }
+
+    
     @Override
     public String toString() {
         return "Usuario{" + "id=" + id + ", nombre=" + nombre + " " + apellido + ", email=" + email + '}';

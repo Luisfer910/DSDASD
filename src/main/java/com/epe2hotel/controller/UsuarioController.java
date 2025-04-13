@@ -69,7 +69,12 @@ public class UsuarioController {
                 session.setAttribute("usuarioId", usuario.getId());
                 session.setAttribute("usuarioNombre", usuario.getNombre());
                 
-                response.sendRedirect(request.getContextPath() + "/");
+                // Redirección según si es admin o no
+                if (usuario.isAdmin()) {
+                    response.sendRedirect(request.getContextPath() + "/admin/");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/app/usuario/perfil");
+                }
             } else {
                 request.setAttribute("error", "Email o contraseña incorrectos");
                 request.getRequestDispatcher("/WEB-INF/views/usuario/login.jsp").forward(request, response);
@@ -112,6 +117,19 @@ public class UsuarioController {
             response.sendRedirect(request.getContextPath() + "/");
         } else {
             request.getRequestDispatcher("/WEB-INF/views/usuario/registro.jsp").forward(request, response);
+        }
+    }
+
+    public void mostrarPerfil(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        if (usuario != null) {
+            mostrarPerfil(request, response, usuario);
+        } else {
+            // Si no hay sesión, redirigir al login
+            response.sendRedirect(request.getContextPath() + "/app/login");
         }
     }
     
